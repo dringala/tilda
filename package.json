@@ -12,6 +12,6 @@
   "license": "ISC",
   "dependencies": {
     "@ai-sdk/google": "^1.2.22",
-    "ai": "^5.0.0-beta.17"
+    "ai": "^4.3.18"
   }
 }
