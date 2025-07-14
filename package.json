@@ -1,17 +1,15 @@
 {
-  "name": "tilda",
-  "version": "1.0.0",
-  "type": "module",
-  "description": "",
-  "main": "index.js",
+  "name": "your-vercel-project",
+  "version": "0.1.0",
+  "private": true,
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
   "dependencies": {
-    "@ai-sdk/google": "^0.0.1",
-    "ai": "^4.0.0"
+    "@ai-sdk/google": "^1.2.22", 
+    "ai": "^5.0.0-beta.17"
   }
 }
