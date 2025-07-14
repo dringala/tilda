@@ -12,16 +12,16 @@ export default async function handler(req, res) {
     return res.status(400).json({ error: 'Missing prompt or API key' });
   }
 
-  const google = new GoogleGenerativeAI({
-    apiKey: key,
-    model: 'models/gemini-1.5-flash',
-  });
-
   try {
+    const google = new GoogleGenerativeAI({
+      apiKey: key,
+      model: 'models/gemini-1.5-flash',
+    });
+
     const result = await google.invoke(prompt);
     res.status(200).json({ text: result });
   } catch (err) {
-    console.error('Gemini error:', err);
+    console.error('Gemini SDK error:', err);
     res.status(500).json({ error: 'Gemini request failed' });
   }
 }
