@@ -2,11 +2,11 @@ import { generateText } from 'ai';
 import { google } from '@ai-sdk/google';
 
 export default async function handler(req, res) {
-  // Add CORS headers
+  // CORS headers
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
 
-  // Handle preflight OPTIONS request
+  // Handle preflight
   if (req.method === 'OPTIONS') {
     return res.status(200).end();
   }
@@ -32,7 +32,7 @@ export default async function handler(req, res) {
   console.log('[Debug] API key loaded:', !!apiKey);
 
   if (!apiKey || !prompt) {
-    return res.status(400).json({ error: 'Missing prompt in request body or GEMINI_API_KEY environment variable.' });
+    return res.status(400).json({ error: 'Missing prompt in request body or API key in env.' });
   }
 
   try {
@@ -44,4 +44,6 @@ export default async function handler(req, res) {
     res.status(200).json({ text });
   } catch (err) {
     console.error('Error during Gemini text generation:', err);
-    res.status(500).
+    res.status(500).json({ error: err.message || 'Gemini request failed' });
+  }
+}
