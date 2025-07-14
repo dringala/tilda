@@ -28,16 +28,13 @@ export default async function handler(req, res) {
 
   try {
     const { text } = await generateText({
-      model: google({
-        model: 'models/gemini-1.5-flash',
-        apiKey,
-      }),
+      model: google('models/gemini-1.5-flash', { apiKey }),
       prompt,
     });
 
     res.status(200).json({ text });
   } catch (err) {
     console.error('Error during Gemini text generation:', err);
-    res.status(500).json({ error: 'Failed to generate text from Gemini. Please try again later.' });
+    res.status(500).json({ error: err.message || 'Gemini request failed' });
   }
 }
