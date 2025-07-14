@@ -3,6 +3,13 @@ import { generateText } from 'ai';
 // Import the Google provider from the AI SDK
 import { google } from '@ai-sdk/google';
 
+// Configure the Google provider globally for this module.
+// This is the recommended way to pass the API key to the Google provider.
+// It creates a configured instance of the Google AI model provider.
+const googleModelProvider = google.configure({
+  apiKey: process.env.GEMINI_API_KEY, // Pass the API key here
+});
+
 /**
  * This is the main API handler function for your Vercel API route.
  * It handles incoming requests to the /api/generate-text endpoint.
@@ -17,9 +24,9 @@ export default async function handler(req, res) {
     return res.status(405).json({ error: 'Method Not Allowed. Only POST requests are supported.' });
   }
 
-  // Retrieve the Gemini API key from environment variables.
-  // It's crucial to store sensitive information like API keys in environment variables
-  // and not hardcode them directly in your application code.
+  // The API key is now retrieved and configured globally above,
+  // so we don't need to check it here for the `google` function call itself,
+  // but we still need to ensure it was set in the environment for the configuration to work.
   const apiKey = process.env.GEMINI_API_KEY;
 
   let prompt;
@@ -56,13 +63,9 @@ export default async function handler(req, res) {
     // Call the generateText function from the AI SDK.
     // This function interacts with the specified AI model to generate text.
     const { text } = await generateText({
-      // Configure the model to use Google's Gemini-1.5-Flash.
-      // IMPORTANT: For @ai-sdk/google, the model name should typically NOT include 'models/'.
-      // The SDK handles adding the 'models/' prefix internally.
-      model: google({
-        model: 'gemini-1.5-flash', // Changed from 'models/gemini-1.5-flash' to just 'gemini-1.5-flash'
-        apiKey, // Pass the retrieved API key
-      }),
+      // Use the configured googleModelProvider and specify the model ID.
+      // The API key is already handled by the `google.configure` call.
+      model: googleModelProvider.model('gemini-1.5-flash'),
       // Provide the user's prompt to the model for text generation.
       prompt,
     });
