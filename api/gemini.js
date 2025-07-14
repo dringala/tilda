@@ -29,7 +29,7 @@ export default async function handler(req, res) {
   try {
     const { text } = await generateText({
       model: google({
-        model: 'gemini-1.5-flash',
+        model: 'models/gemini-1.5-flash',
         apiKey,
       }),
       prompt,
