@@ -1,4 +1,5 @@
-import { GoogleGenerativeAI } from 'ai/google';
+import { generateText } from 'ai';
+import { google } from '@ai-sdk/google';
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
@@ -13,15 +14,18 @@ export default async function handler(req, res) {
   }
 
   try {
-    const google = new GoogleGenerativeAI({
+    const model = google('models/gemini-2.0-flash', {
       apiKey: key,
-      model: 'models/gemini-1.5-flash',
     });
 
-    const result = await google.invoke(prompt);
-    res.status(200).json({ text: result });
+    const result = await generateText({
+      model,
+      prompt,
+    });
+
+    res.status(200).json({ text: result.text });
   } catch (err) {
-    console.error('Gemini SDK error:', err);
+    console.error('Gemini error:', err);
     res.status(500).json({ error: 'Gemini request failed' });
   }
 }
