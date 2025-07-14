@@ -10,7 +10,6 @@ export default async function handler(req, res) {
 
   let prompt;
   try {
-    // Ensure JSON is parsed correctly
     if (typeof req.body === 'string') {
       req.body = JSON.parse(req.body);
     }
@@ -20,7 +19,6 @@ export default async function handler(req, res) {
     return res.status(400).json({ error: 'Invalid JSON body' });
   }
 
-  // Debug logs
   console.log('[Debug] prompt:', prompt);
   console.log('[Debug] apiKey exists:', !!apiKey);
 
@@ -30,7 +28,10 @@ export default async function handler(req, res) {
 
   try {
     const { text } = await generateText({
-      model: google('models/gemini-1.5-flash', { apiKey }),
+      model: google({
+        model: 'models/gemini-1.5-flash',
+        apiKey,
+      }),
       prompt,
     });
 
