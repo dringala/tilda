@@ -56,12 +56,10 @@ export default async function handler(req, res) {
     // Call the generateText function from the AI SDK.
     // This function interacts with the specified AI model to generate text.
     const { text } = await generateText({
-      // Configure the model to use Google's Gemini-1.5-Flash.
-      // For your current AI SDK versions, the API key is passed directly here.
-      model: google({
-        model: 'gemini-1.5-flash', // Specify the exact model to use
-        apiKey, // Pass the retrieved API key directly
-      }),
+      // IMPORTANT CHANGE: Configure the Google provider with the API key first,
+      // then select the model from that configured provider.
+      // This ensures the API key is correctly associated with the model instance.
+      model: google.with({ apiKey }).model('gemini-1.5-flash'),
       // Provide the user's prompt to the model for text generation.
       prompt,
     });
